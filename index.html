@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trần Minh Nghĩa - Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#6366f1',
+            secondary: '#8b5cf6',
+            accent: '#06b6d4',
+            dark: '#0f172a',
+            'dark-card': '#1e293b',
+          },
+          fontFamily: {
+            'sans': ['Inter', 'system-ui', 'sans-serif'],
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.6s ease-out',
+            'slide-up': 'slideUp 0.6s ease-out',
+            'scale-in': 'scaleIn 0.3s ease-out',
+            'float': 'float 6s ease-in-out infinite',
+            'glow': 'glow 2s ease-in-out infinite alternate',
+            'pulse-glow': 'pulse-glow 2s ease-in-out infinite alternate',
+            'bounce-in': 'bounce-in 0.6s ease-out',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    body { 
+      font-family: 'Inter', sans-serif; 
+      line-height: 1.6;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    
+    .dark body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+    
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .dark .glass-effect {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .tab-content { 
+      display: none; 
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    
+    .tab-content.active { 
+      display: block; 
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
+    
+    .tab-btn {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .tab-btn:hover {
+      transform: translateY(-2px);
+    }
+    
+    .tab-btn.active {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+    }
+    
+    .avatar-glow {
+      position: relative;
+      animation: pulse-glow 2s ease-in-out infinite alternate;
+    }
+    
+    .avatar-glow::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4);
+      border-radius: 50%;
+      z-index: -1;
+      opacity: 0.7;
+      animation: pulse-glow 2s ease-in-out infinite alternate;
+    }
+    
+    .floating-shape {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.1;
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .floating-shape:nth-child(1) {
+      top: 10%;
+      left: 10%;
+      width: 80px;
+      height: 80px;
+      background: #6366f1;
+      animation-delay: 0s;
+    }
+    
+    .floating-shape:nth-child(2) {
+      top: 50%;
+      right: 10%;
+      width: 60px;
+      height: 60px;
+      background: #8b5cf6;
+      animation-delay: 2s;
+    }
+    
+    .floating-shape:nth-child(3) {
+      bottom: 20%;
+      left: 20%;
+      width: 100px;
+      height: 100px;
+      background: #06b6d4;
+      animation-delay: 4s;
+    }
+    
+    .project-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .skill-tag {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: inline-block;
+      margin: 0.25rem;
+    }
+    
+    .skill-tag:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+    }
+    
+    .timeline-item {
+      position: relative;
+      padding-left: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+      width: 12px;
+      height: 12px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+    }
+    
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    
+    .social-link:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+    
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+    }
+    
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7); }
+      100% { box-shadow: 0 0 0 20px rgba(99, 102, 241, 0); }
+    }
+    
+    @keyframes bounce-in {
+      0% { transform: scale(0.3); opacity: 0; }
+      50% { transform: scale(1.05); }
+      70% { transform: scale(0.9); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    
+    .tab-btn.active {
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, #2563eb, #06d6a0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .skill-bar {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .skill-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #2563eb, #06d6a0);
+      border-radius: inherit;
+      transition: width 2s ease-in-out;
+    }
+    
+    .skill-bar[data-skill="90"]::after { width: 90%; }
+    .skill-bar[data-skill="85"]::after { width: 85%; }
+    .skill-bar[data-skill="80"]::after { width: 80%; }
+    .skill-bar[data-skill="75"]::after { width: 75%; }
+    .skill-bar[data-skill="70"]::after { width: 70%; }
+    
+    .floating-shapes {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .shape {
+      position: absolute;
+      opacity: 0.1;
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .shape:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+    .shape:nth-child(2) { top: 20%; right: 10%; animation-delay: 2s; }
+    .shape:nth-child(3) { bottom: 10%; left: 20%; animation-delay: 4s; }
+    .shape:nth-child(4) { bottom: 20%; right: 20%; animation-delay: 1s; }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    @keyframes glow {
+      from { box-shadow: 0 0 20px rgba(37, 99, 235, 0.3); }
+      to { box-shadow: 0 0 30px rgba(37, 99, 235, 0.6); }
+    }
+    
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    .dark .project-card:hover {
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    .typing-animation::after {
+      content: '|';
+      animation: blink 1s infinite;
+    }
+    
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+    
+    .progress-circle {
+      position: relative;
+      width: 60px;
+      height: 60px;
+    }
+    
+    .progress-circle svg {
+      transform: rotate(-90deg);
+    }
+    
+    .progress-circle .progress-ring {
+      fill: none;
+      stroke: #e5e7eb;
+      stroke-width: 4;
+    }
+    
+    .progress-circle .progress-ring-fill {
+      fill: none;
+      stroke: url(#gradient);
+      stroke-width: 4;
+      stroke-linecap: round;
+      transition: stroke-dasharray 2s ease-in-out;
+    }
+    
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -6px;
+      top: 8px;
+      width: 12px;
+      height: 12px;
+      background: linear-gradient(135deg, #2563eb, #06d6a0);
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+    }
+    
+    
+    /* Responsive improvements */
+    @media (max-width: 768px) {
+      .floating-shape { display: none; }
+      .project-card:hover { transform: none; }
+      .skill-tag:hover { transform: none; }
+    }
+    
+    /* Dark mode specific styles */
+    .dark .project-card {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .dark .project-card:hover {
+      background: rgba(0, 0, 0, 0.4);
+    }
+  </style>
+</head>
+<body class="min-h-screen relative overflow-x-hidden">
+  <!-- Floating Background Shapes -->
+  <div class="floating-shape"></div>
+  <div class="floating-shape"></div>
+  <div class="floating-shape"></div>
+
+  <div class="min-h-screen lg:flex relative z-10">
+    <!-- Sidebar -->
+    <aside class="glass-effect w-full lg:w-1/3 xl:w-1/4 p-8 shadow-2xl border-r border-white/20 dark:border-gray-700/50">
+      <div class="flex flex-col items-center text-center space-y-6">
+        <!-- Avatar with glow effect -->
+        <div class="relative group">
+          <div class="avatar-glow w-40 h-40 rounded-full border-4 border-white shadow-2xl">
+            <img src="images/minhnghia.jpg" 
+                 class="w-full h-full rounded-full object-cover transition-transform duration-300 group-hover:scale-105" 
+                 alt="Trần Minh Nghĩa">
+          </div>
+        </div>
+        
+        <!-- Name and Title -->
+        <div class="space-y-2">
+          <h1 class="text-3xl font-bold text-white">Trần Minh Nghĩa</h1>
+          <p class="text-lg text-gray-300 font-medium">(Harry)</p>
+          <div class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-full text-sm font-semibold shadow-lg">
+            <i class="fas fa-code mr-2"></i>
+            Full-Stack Developer
+          </div>
+        </div>
+
+        <!-- Quick Info Cards -->
+        <div class="w-full space-y-3 text-sm">
+          <div class="flex items-center p-3 glass-effect rounded-lg">
+            <i class="fas fa-envelope text-primary mr-3"></i>
+            <span class="text-gray-200">harry@example.com</span>
+          </div>
+          <div class="flex items-center p-3 glass-effect rounded-lg">
+            <i class="fas fa-phone text-secondary mr-3"></i>
+            <span class="text-gray-200">+84 912 345 678</span>
+          </div>
+          <div class="flex items-center p-3 glass-effect rounded-lg">
+            <i class="fas fa-map-marker-alt text-accent mr-3"></i>
+            <span class="text-gray-200">Cần Thơ, Việt Nam</span>
+          </div>
+        </div>
+
+        <!-- Social Links -->
+        <div class="flex space-x-4">
+          <a href="#" class="social-link">
+            <i class="fab fa-github text-lg"></i>
+          </a>
+          <a href="#" class="social-link">
+            <i class="fab fa-linkedin text-lg"></i>
+          </a>
+          <a href="#" class="social-link">
+            <i class="fab fa-youtube text-lg"></i>
+          </a>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="w-full space-y-3">
+          <a href="#" class="btn-primary block text-center">
+            <i class="fas fa-download mr-2"></i>
+            Tải CV
+          </a>
+          <button id="darkToggle" class="w-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            <i class="fas fa-moon mr-2"></i>
+            <span id="darkToggleText">Dark Mode</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="w-full md:w-2/3 lg:w-3/4 p-8">
+      <!-- Tabs -->
+      <nav class="flex flex-wrap gap-4 border-b border-white/20 pb-4 mb-8">
+        <button class="tab-btn px-6 py-3 rounded-lg text-sm font-medium text-gray-300 glass-effect transition-all duration-300 hover:text-white" data-tab="about">
+          <i class="fas fa-user mr-2"></i>Giới thiệu
+        </button>
+        <button class="tab-btn px-6 py-3 rounded-lg text-sm font-medium text-gray-300 glass-effect transition-all duration-300 hover:text-white" data-tab="skills">
+          <i class="fas fa-tools mr-2"></i>Kỹ năng
+        </button>
+        <button class="tab-btn px-6 py-3 rounded-lg text-sm font-medium text-gray-300 glass-effect transition-all duration-300 hover:text-white" data-tab="projects">
+          <i class="fas fa-folder mr-2"></i>Dự án
+        </button>
+        <button class="tab-btn px-6 py-3 rounded-lg text-sm font-medium text-gray-300 glass-effect transition-all duration-300 hover:text-white" data-tab="education">
+          <i class="fas fa-graduation-cap mr-2"></i>Học vấn
+        </button>
+        <button class="tab-btn px-6 py-3 rounded-lg text-sm font-medium text-gray-300 glass-effect transition-all duration-300 hover:text-white" data-tab="experience">
+          <i class="fas fa-briefcase mr-2"></i>Kinh nghiệm
+        </button>
+        <button class="tab-btn px-6 py-3 rounded-lg text-sm font-medium text-gray-300 glass-effect transition-all duration-300 hover:text-white" data-tab="certificates">
+          <i class="fas fa-certificate mr-2"></i>Chứng chỉ
+        </button>
+        <button class="tab-btn px-6 py-3 rounded-lg text-sm font-medium text-gray-300 glass-effect transition-all duration-300 hover:text-white" data-tab="timeline">
+          <i class="fas fa-clock mr-2"></i>Hoạt động
+        </button>
+        <button class="tab-btn px-6 py-3 rounded-lg text-sm font-medium text-gray-300 glass-effect transition-all duration-300 hover:text-white" data-tab="contact">
+          <i class="fas fa-envelope mr-2"></i>Liên hệ
+        </button>
+      </nav>
+
+      <!-- Tab contents -->
+      <section id="about" class="tab-content active">
+        <div class="glass-effect p-8 rounded-xl">
+          <h2 class="text-3xl font-bold text-white mb-6 flex items-center">
+            <i class="fas fa-user text-primary mr-3"></i>
+            Giới thiệu về tôi
+          </h2>
+          <div class="space-y-6 text-gray-200">
+            <p class="text-lg leading-relaxed">
+              Xin chào! Mình là <strong class="text-primary">Trần Minh Nghĩa</strong> (Harry), sinh viên IT tại Đại học Nam Cần Thơ. 
+              Đam mê lập trình web, yêu thích UI/UX, AI và công nghệ mới.
+            </p>
+            <p class="leading-relaxed">
+              Với kinh nghiệm phát triển web sử dụng ASP.NET Core MVC, JavaScript, và các công nghệ hiện đại, 
+              mình luôn tìm kiếm cơ hội để học hỏi và phát triển bản thân trong lĩnh vực công nghệ.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+              <div class="bg-white/5 p-4 rounded-lg">
+                <h3 class="font-semibold text-primary mb-2">🎯 Mục tiêu</h3>
+                <p class="text-sm">Trở thành Full-Stack Developer chuyên nghiệp</p>
+              </div>
+              <div class="bg-white/5 p-4 rounded-lg">
+                <h3 class="font-semibold text-secondary mb-2">💡 Đam mê</h3>
+                <p class="text-sm">AI, Machine Learning, Web Development</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="skills" class="tab-content">
+        <div class="glass-effect p-8 rounded-xl">
+          <h2 class="text-3xl font-bold text-white mb-6 flex items-center">
+            <i class="fas fa-tools text-primary mr-3"></i>
+            Kỹ năng chuyên môn
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="space-y-4">
+              <h3 class="text-xl font-semibold text-secondary">Frontend</h3>
+              <div class="space-y-2">
+                <span class="skill-tag">HTML5/CSS3</span>
+                <span class="skill-tag">JavaScript ES6+</span>
+                <span class="skill-tag">TailwindCSS</span>
+                <span class="skill-tag">Bootstrap</span>
+                <span class="skill-tag">Responsive Design</span>
+              </div>
+            </div>
+            <div class="space-y-4">
+              <h3 class="text-xl font-semibold text-secondary">Backend</h3>
+              <div class="space-y-2">
+                <span class="skill-tag">ASP.NET Core MVC</span>
+                <span class="skill-tag">Entity Framework</span>
+                <span class="skill-tag">RESTful API</span>
+                <span class="skill-tag">C#</span>
+                <span class="skill-tag">LINQ</span>
+              </div>
+            </div>
+            <div class="space-y-4">
+              <h3 class="text-xl font-semibold text-secondary">Database & Tools</h3>
+              <div class="space-y-2">
+                <span class="skill-tag">SQL Server</span>
+                <span class="skill-tag">MySQL</span>
+                <span class="skill-tag">Git/GitHub</span>
+                <span class="skill-tag">Figma</span>
+                <span class="skill-tag">Visual Studio</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" class="tab-content">
+        <div class="glass-effect p-8 rounded-xl">
+          <h2 class="text-3xl font-bold text-white mb-6 flex items-center">
+            <i class="fas fa-folder text-primary mr-3"></i>
+            Dự án nổi bật
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="project-card p-6 rounded-xl">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-bold text-white">TechNovaStore</h3>
+                <i class="fas fa-shopping-cart text-primary text-2xl"></i>
+              </div>
+              <p class="text-gray-300 mb-4">
+                Website thương mại điện tử được xây dựng bằng ASP.NET MVC với đầy đủ tính năng 
+                quản lý sản phẩm, giỏ hàng, thanh toán và thống kê.
+              </p>
+              <div class="flex flex-wrap gap-2 mb-4">
+                <span class="px-2 py-1 bg-primary/20 text-primary rounded text-xs">ASP.NET MVC</span>
+                <span class="px-2 py-1 bg-secondary/20 text-secondary rounded text-xs">Entity Framework</span>
+                <span class="px-2 py-1 bg-accent/20 text-accent rounded text-xs">SQL Server</span>
+              </div>
+              <div class="flex space-x-3">
+                <a href="#" class="text-primary hover:text-secondary transition-colors">
+                  <i class="fab fa-github"></i> Code
+                </a>
+                <a href="#" class="text-primary hover:text-secondary transition-colors">
+                  <i class="fas fa-external-link-alt"></i> Demo
+                </a>
+              </div>
+            </div>
+
+            <div class="project-card p-6 rounded-xl">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-bold text-white">Text Image Denoiser</h3>
+                <i class="fas fa-brain text-secondary text-2xl"></i>
+              </div>
+              <p class="text-gray-300 mb-4">
+                Mô hình AI xử lý ảnh OCR sử dụng PyTorch + UNet để khử nhiễu, 
+                cải thiện chất lượng ảnh văn bản scanned.
+              </p>
+              <div class="flex flex-wrap gap-2 mb-4">
+                <span class="px-2 py-1 bg-primary/20 text-primary rounded text-xs">PyTorch</span>
+                <span class="px-2 py-1 bg-secondary/20 text-secondary rounded text-xs">UNet</span>
+                <span class="px-2 py-1 bg-accent/20 text-accent rounded text-xs">Computer Vision</span>
+              </div>
+              <div class="flex space-x-3">
+                <a href="#" class="text-primary hover:text-secondary transition-colors">
+                  <i class="fab fa-github"></i> Code
+                </a>
+                <a href="#" class="text-primary hover:text-secondary transition-colors">
+                  <i class="fas fa-external-link-alt"></i> Demo
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="education" class="tab-content">
+        <div class="glass-effect p-8 rounded-xl">
+          <h2 class="text-3xl font-bold text-white mb-6 flex items-center">
+            <i class="fas fa-graduation-cap text-primary mr-3"></i>
+            Học vấn
+          </h2>
+          <div class="space-y-6">
+            <div class="timeline-item">
+              <div class="glass-effect p-6 rounded-lg">
+                <h3 class="text-xl font-semibold text-white mb-2">Đại học Nam Cần Thơ</h3>
+                <p class="text-primary font-medium">Công nghệ Thông tin</p>
+                <p class="text-gray-300 text-sm">2022 - 2025</p>
+                <p class="text-gray-400 mt-2">Chuyên ngành: Công nghệ Phần mềm</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="glass-effect p-6 rounded-lg">
+                <h3 class="text-xl font-semibold text-white mb-2">THPT Nguyễn Việt Dũng</h3>
+                <p class="text-secondary font-medium">Tốt nghiệp</p>
+                <p class="text-gray-300 text-sm">2021</p>
+                <p class="text-gray-400 mt-2">Khối A - Toán, Lý, Hóa</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="experience" class="tab-content">
+        <div class="glass-effect p-8 rounded-xl">
+          <h2 class="text-3xl font-bold text-white mb-6 flex items-center">
+            <i class="fas fa-briefcase text-primary mr-3"></i>
+            Kinh nghiệm làm việc
+          </h2>
+          <div class="space-y-6">
+            <div class="timeline-item">
+              <div class="glass-effect p-6 rounded-lg">
+                <h3 class="text-xl font-semibold text-white mb-2">DevCompany.vn</h3>
+                <p class="text-primary font-medium">Thực tập sinh Full-Stack</p>
+                <p class="text-gray-300 text-sm">2024</p>
+                <ul class="text-gray-400 mt-2 space-y-1">
+                  <li>• Xây dựng giao diện quản trị với ASP.NET MVC</li>
+                  <li>• Tích hợp biểu đồ thống kê Chart.js</li>
+                  <li>• Tối ưu hóa database queries</li>
+                </ul>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="glass-effect p-6 rounded-lg">
+                <h3 class="text-xl font-semibold text-white mb-2">Freelancer</h3>
+                <p class="text-secondary font-medium">Web Developer</p>
+                <p class="text-gray-300 text-sm">2023</p>
+                <ul class="text-gray-400 mt-2 space-y-1">
+                  <li>• Thiết kế landing page responsive</li>
+                  <li>• Sử dụng TailwindCSS, JavaScript</li>
+                  <li>• Tối ưu SEO và performance</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="certificates" class="tab-content">
+        <div class="glass-effect p-8 rounded-xl">
+          <h2 class="text-3xl font-bold text-white mb-6 flex items-center">
+            <i class="fas fa-certificate text-primary mr-3"></i>
+            Chứng chỉ & Giải thưởng
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white/5 p-6 rounded-lg">
+              <div class="flex items-center mb-4">
+                <i class="fas fa-trophy text-yellow-500 text-2xl mr-3"></i>
+                <h3 class="text-lg font-semibold text-white">Olympic Tin học</h3>
+              </div>
+              <p class="text-gray-300">Giải Ba cấp trường</p>
+              <p class="text-sm text-gray-400 mt-1">Đại học Nam Cần Thơ - 2023</p>
+            </div>
+            <div class="bg-white/5 p-6 rounded-lg">
+              <div class="flex items-center mb-4">
+                <i class="fas fa-language text-blue-500 text-2xl mr-3"></i>
+                <h3 class="text-lg font-semibold text-white">TOEIC 700+</h3>
+              </div>
+              <p class="text-gray-300">Chứng chỉ tiếng Anh</p>
+              <p class="text-sm text-gray-400 mt-1">IIG Việt Nam - 2024</p>
+            </div>
+            <div class="bg-white/5 p-6 rounded-lg">
+              <div class="flex items-center mb-4">
+                <i class="fab fa-google text-red-500 text-2xl mr-3"></i>
+                <h3 class="text-lg font-semibold text-white">Google Digital Garage</h3>
+              </div>
+              <p class="text-gray-300">Digital Marketing Fundamentals</p>
+              <p class="text-sm text-gray-400 mt-1">Google - 2023</p>
+            </div>
+            <div class="bg-white/5 p-6 rounded-lg">
+              <div class="flex items-center mb-4">
+                <i class="fas fa-code text-green-500 text-2xl mr-3"></i>
+                <h3 class="text-lg font-semibold text-white">HackerRank</h3>
+              </div>
+              <p class="text-gray-300">Problem Solving (5 stars)</p>
+              <p class="text-sm text-gray-400 mt-1">HackerRank - 2024</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="timeline" class="tab-content">
+        <div class="glass-effect p-8 rounded-xl">
+          <h2 class="text-3xl font-bold text-white mb-6 flex items-center">
+            <i class="fas fa-clock text-primary mr-3"></i>
+            Hoạt động nổi bật
+          </h2>
+          <div class="space-y-6">
+            <div class="timeline-item">
+              <div class="glass-effect p-6 rounded-lg">
+                <h3 class="text-lg font-semibold text-white mb-2">AI Hackathon 2024</h3>
+                <p class="text-primary text-sm mb-2">Tháng 11, 2024</p>
+                <p class="text-gray-300">Tham gia cuộc thi AI Hackathon, đạt Top 10 với dự án chatbot hỗ trợ học tập.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="glass-effect p-6 rounded-lg">
+                <h3 class="text-lg font-semibold text-white mb-2">Tech4Good Volunteer</h3>
+                <p class="text-secondary text-sm mb-2">Tháng 8, 2023</p>
+                <p class="text-gray-300">Tình nguyện viên dạy lập trình cơ bản cho học sinh vùng nông thôn.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="glass-effect p-6 rounded-lg">
+                <h3 class="text-lg font-semibold text-white mb-2">Web Dev Club</h3>
+                <p class="text-accent text-sm mb-2">Tháng 9, 2022</p>
+                <p class="text-gray-300">Thành viên sáng lập CLB Phát triển Web tại Đại học Nam Cần Thơ.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="tab-content">
+        <div class="glass-effect p-8 rounded-xl">
+          <h2 class="text-3xl font-bold text-white mb-6 flex items-center">
+            <i class="fas fa-envelope text-primary mr-3"></i>
+            Liên hệ với tôi
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-6">
+              <div class="flex items-center space-x-4">
+                <div class="bg-primary/20 p-3 rounded-full">
+                  <i class="fas fa-envelope text-primary text-xl"></i>
+                </div>
+                <div>
+                  <h3 class="text-white font-semibold">Email</h3>
+                  <p class="text-gray-300">harry@example.com</p>
+                </div>
+              </div>
+              <div class="flex items-center space-x-4">
+                <div class="bg-secondary/20 p-3 rounded-full">
+                  <i class="fas fa-phone text-secondary text-xl"></i>
+                </div>
+                <div>
+                  <h3 class="text-white font-semibold">Điện thoại</h3>
+                  <p class="text-gray-300">+84 912 345 678</p>
+                </div>
+              </div>
+              <div class="flex items-center space-x-4">
+                <div class="bg-accent/20 p-3 rounded-full">
+                  <i class="fas fa-map-marker-alt text-accent text-xl"></i>
+                </div>
+                <div>
+                  <h3 class="text-white font-semibold">Địa chỉ</h3>
+                  <p class="text-gray-300">Cần Thơ, Việt Nam</p>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-6">
+              <h3 class="text-white font-semibold text-lg">Kết nối với tôi</h3>
+              <div class="flex space-x-4">
+                <a href="#" class="social-link">
+                  <i class="fab fa-github text-xl"></i>
+                </a>
+                <a href="#" class="social-link">
+                  <i class="fab fa-linkedin text-xl"></i>
+                </a>
+                <a href="#" class="social-link">
+                  <i class="fab fa-youtube text-xl"></i>
+                </a>
+                <a href="#" class="social-link">
+                  <i class="fab fa-facebook text-xl"></i>
+                </a>
+              </div>
+              <div class="mt-6">
+                <a href="#" class="btn-primary">
+                  <i class="fas fa-download mr-2"></i>
+                  Tải CV PDF
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Script -->
+  <script>
+    // Tab functionality
+    const buttons = document.querySelectorAll('.tab-btn');
+    const tabs = document.querySelectorAll('.tab-content');
+    
+    // Set initial active tab
+    buttons[0].classList.add('active');
+    
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Remove active class from all buttons and tabs
+        buttons.forEach(b => b.classList.remove('active'));
+        tabs.forEach(t => t.classList.remove('active'));
+        
+        // Add active class to clicked button and corresponding tab
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    // Dark mode toggle
+    const darkToggle = document.getElementById('darkToggle');
+    const darkToggleText = document.getElementById('darkToggleText');
+    
+    darkToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      const isDark = document.documentElement.classList.contains('dark');
+      darkToggleText.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+      darkToggle.querySelector('i').className = isDark ? 'fas fa-sun mr-2' : 'fas fa-moon mr-2';
+    });
+
+    // Smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Add animation delay for tab content
+    tabs.forEach((tab, index) => {
+      tab.style.animationDelay = `${index * 0.1}s`;
+    });
+  </script>
+</body>
+</html>
