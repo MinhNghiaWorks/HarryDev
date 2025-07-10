@@ -411,6 +411,16 @@
       .skill-tag:hover { transform: none; }
     }
     
+    /* Fix hover state stuck on touch devices */
+    @media (hover: none) and (pointer: coarse) {
+      .tab-btn:hover { transform: none; }
+      .social-link:hover { transform: none; box-shadow: none; }
+      .btn-primary:hover { transform: none; box-shadow: none; }
+      .project-card:hover { transform: none; box-shadow: none; }
+      .skill-tag:hover { transform: none; box-shadow: none; }
+      #darkToggle:hover { transform: none; box-shadow: none; }
+    }
+    
     /* Dark mode specific styles */
     .dark .project-card {
       background: rgba(0, 0, 0, 0.3);
@@ -455,37 +465,40 @@
         <div class="w-full space-y-3 text-sm">
           <div class="flex items-center p-3 glass-effect rounded-lg">
             <i class="fas fa-envelope text-primary mr-3"></i>
-            <span class="text-gray-200">harry@example.com</span>
+            <span class="text-gray-200">tranminhnghia.works@gmail.com</span>
           </div>
           <div class="flex items-center p-3 glass-effect rounded-lg">
             <i class="fas fa-phone text-secondary mr-3"></i>
-            <span class="text-gray-200">+84 912 345 678</span>
+            <span class="text-gray-200">+84 - 079 393 0082 (Zalo)</span>
           </div>
           <div class="flex items-center p-3 glass-effect rounded-lg">
             <i class="fas fa-map-marker-alt text-accent mr-3"></i>
-            <span class="text-gray-200">Cần Thơ, Việt Nam</span>
+            <span class="text-gray-200">Long Tuyền, Cần Thơ, Việt Nam</span>
           </div>
         </div>
 
         <!-- Social Links -->
         <div class="flex space-x-4">
-          <a href="#" class="social-link">
+          <a href="https://github.com/minhnghiaworks" class="social-link">
             <i class="fab fa-github text-lg"></i>
           </a>
-          <a href="#" class="social-link">
+          <a href="https://www.facebook.com/minhnghia.1512" class="social-link">
+            <i class="fab fa-facebook text-lg"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/minhnghia1512" class="social-link">
             <i class="fab fa-linkedin text-lg"></i>
           </a>
-          <a href="#" class="social-link">
-            <i class="fab fa-youtube text-lg"></i>
+          <a href="https://www.instagram.com/minhnghia.1512" class="social-link">
+            <i class="fab fa-instagram text-lg"></i>
           </a>
         </div>
 
         <!-- Action Buttons -->
         <div class="w-full space-y-3">
-          <a href="#" class="btn-primary block text-center">
+          <button id="downloadCV" class="btn-primary block text-center w-full">
             <i class="fas fa-download mr-2"></i>
-            Tải CV
-          </a>
+            <span id="downloadText">Tải CV</span>
+          </button>
           <button id="darkToggle" class="w-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             <i class="fas fa-moon mr-2"></i>
             <span id="darkToggleText">Dark Mode</span>
@@ -843,10 +856,10 @@
                 </a>
               </div>
               <div class="mt-6">
-                <a href="#" class="btn-primary">
+                <button id="contactDownloadCV" class="btn-primary">
                   <i class="fas fa-download mr-2"></i>
-                  Tải CV PDF
-                </a>
+                  <span>Tải CV PDF</span>
+                </button>
               </div>
             </div>
           </div>
@@ -904,6 +917,90 @@
     tabs.forEach((tab, index) => {
       tab.style.animationDelay = `${index * 0.1}s`;
     });
+
+    // CV Download functionality
+    function downloadCV(event) {
+      const button = event.target.closest('button');
+      const originalContent = button.innerHTML;
+      
+      // Show loading state
+      button.disabled = true;
+      button.innerHTML = `
+        <i class="fas fa-spinner fa-spin mr-2"></i>
+        <span>Đang tải...</span>
+      `;
+      button.classList.add('opacity-80', 'cursor-not-allowed');
+      
+      // Simulate loading time (1.5 seconds)
+      setTimeout(() => {
+        // Create and trigger download
+        const link = document.createElement('a');
+        link.href = 'tranminhnghia_cv.pdf';
+        link.download = 'tranminhnghia_cv.pdf';
+        link.target = '_blank';
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Show success state
+        button.innerHTML = `
+          <i class="fas fa-check mr-2"></i>
+          <span>Đã tải!</span>
+        `;
+        button.classList.remove('opacity-80');
+        button.classList.add('bg-green-500');
+        
+        // Show feedback message
+        showDownloadFeedback();
+        
+        // Reset button after 2 seconds
+        setTimeout(() => {
+          button.disabled = false;
+          button.innerHTML = originalContent;
+          button.classList.remove('cursor-not-allowed', 'bg-green-500');
+        }, 2000);
+      }, 1500);
+    }
+
+    function showDownloadFeedback() {
+      // Create feedback element
+      const feedback = document.createElement('div');
+      feedback.innerHTML = `
+        <div class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300">
+          <i class="fas fa-download mr-2"></i>
+          CV đã được tải về thành công!
+        </div>
+      `;
+      
+      document.body.appendChild(feedback);
+      const feedbackEl = feedback.firstElementChild;
+      
+      // Show feedback
+      setTimeout(() => {
+        feedbackEl.classList.remove('translate-x-full');
+      }, 100);
+      
+      // Hide feedback after 3 seconds
+      setTimeout(() => {
+        feedbackEl.classList.add('translate-x-full');
+        setTimeout(() => {
+          document.body.removeChild(feedback);
+        }, 300);
+      }, 3000);
+    }
+
+    // Add event listeners for CV download buttons
+    const downloadCVBtn = document.getElementById('downloadCV');
+    const contactDownloadCVBtn = document.getElementById('contactDownloadCV');
+    
+    if (downloadCVBtn) {
+      downloadCVBtn.addEventListener('click', downloadCV);
+    }
+    
+    if (contactDownloadCVBtn) {
+      contactDownloadCVBtn.addEventListener('click', downloadCV);
+    }
   </script>
 </body>
 </html>
